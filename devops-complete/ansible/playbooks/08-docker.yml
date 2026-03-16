@@ -11,6 +11,7 @@
         name:
           - dnf-plugins-core
           - python3-pip
+          - docker
         state: present
 
     - name: Add Docker repository
@@ -89,28 +90,20 @@
         mode: '0644'
 
     - name: Build Docker image
-      community.docker.docker_image:
-        name: devops-app
-        tag: latest
-        build:
-          path: /opt/docker-app
-        source: build
-        state: present
+      shell: |
+        cd /opt/docker-app
+        docker build -t devops-app:latest .
       ignore_errors: yes
 
     - name: Run Docker container
-      community.docker.docker_container:
-        name: devops-app
-        image: devops-app:latest
-        state: started
-        ports:
-          - "8080:80"
-        restart_policy: always
+      shell: |
+        docker rm -f devops-app || true
+        docker run -d --name devops-app -p 8080:80 --restart=always devops-app:latest
       ignore_errors: yes
 
-    - name: Configure firewall for HTTP
+    - name: Configure firewall for Docker
       firewalld:
-        service: http
+        port: 8080/tcp
         permanent: yes
         state: enabled
       failed_when: false
