@@ -11,7 +11,7 @@
         name:
           - httpd
           - php
-          - php-mysql
+          - php-mysqlnd
           - php-fpm
           - mod_ssl
         state: present
