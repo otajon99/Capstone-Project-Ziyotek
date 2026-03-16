@@ -47,6 +47,15 @@
         port: 3306
         delay: 5
 
+    - name: Set root password for MariaDB
+      community.mysql.mysql_user:
+        name: root
+        password: ""
+        login_user: root
+        check_implicit_admin: yes
+        priv: "*.*:ALL,GRANT"
+      ignore_errors: yes
+
     - name: Create database
       community.mysql.mysql_db:
         name: devops_lab
