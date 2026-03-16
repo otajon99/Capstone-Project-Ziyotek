@@ -30,6 +30,11 @@ variable "instance_type" {
   type        = string
 }
 
+variable "security_group_id" {
+  description = "Security group ID for ASG instances"
+  type        = string
+}
+
 variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)

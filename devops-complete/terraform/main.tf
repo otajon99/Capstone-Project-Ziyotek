@@ -81,6 +81,7 @@ module "asg" {
   target_group_arns = module.alb.target_group_arns
   key_name          = var.key_name
   instance_type     = var.app_instance_type
+  security_group_id = module.ec2.app_security_group_ids[0]
 
   tags = {
     Project = "DevOps-Lab"
