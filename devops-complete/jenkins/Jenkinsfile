@@ -95,7 +95,7 @@ pipeline {
             steps {
                 sh '''
                     cd devops-complete/ansible
-                    ansible-playbook -i inventory/hosts playbooks/01-base-security.yml --ask-vault-pass
+                    ansible-playbook -i inventory/hosts playbooks/01-base-security.yml
                 '''
             }
         }
