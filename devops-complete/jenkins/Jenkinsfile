@@ -21,7 +21,7 @@ pipeline {
         
         stage('Terraform Init') {
             steps {
-                dir('terraform') {
+                dir('devops-complete/terraform') {
                     sh '''
                         terraform init -upgrade
                         terraform version
@@ -32,7 +32,7 @@ pipeline {
         
         stage('Terraform Validate') {
             steps {
-                dir('terraform') {
+                dir('devops-complete/terraform') {
                     sh 'terraform validate'
                 }
             }
@@ -40,10 +40,10 @@ pipeline {
         
         stage('Terraform Plan') {
             steps {
-                dir('terraform') {
+                dir('devops-complete/terraform') {
                     sh 'terraform plan -out=tfplan'
                 }
-                archiveArtifacts artifacts: 'terraform/tfplan', fingerprint: true
+                archiveArtifacts artifacts: 'devops-complete/terraform/tfplan', fingerprint: true
             }
         }
         
@@ -52,7 +52,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                dir('terraform') {
+                dir('devops-complete/terraform') {
                     sh 'terraform apply -auto-approve tfplan'
                 }
             }
@@ -70,7 +70,7 @@ pipeline {
         stage('Ansible Base Security') {
             steps {
                 sh '''
-                    cd ansible
+                    cd devops-complete/ansible
                     ansible-playbook -i inventory/hosts playbooks/01-base-security.yml --ask-vault-pass
                 '''
             }
@@ -79,7 +79,7 @@ pipeline {
         stage('Ansible DNS Server') {
             steps {
                 sh '''
-                    cd ansible
+                    cd devops-complete/ansible
                     ansible-playbook -i inventory/hosts playbooks/02-dns-server.yml
                 '''
             }
@@ -88,7 +88,7 @@ pipeline {
         stage('Ansible Web & LB') {
             steps {
                 sh '''
-                    cd ansible
+                    cd devops-complete/ansible
                     ansible-playbook -i inventory/hosts playbooks/03-webservers.yml
                     ansible-playbook -i inventory/hosts playbooks/04-loadbalancer.yml
                 '''
@@ -98,7 +98,7 @@ pipeline {
         stage('Ansible Database') {
             steps {
                 sh '''
-                    cd ansible
+                    cd devops-complete/ansible
                     ansible-playbook -i inventory/hosts playbooks/05-database.yml
                 '''
             }
@@ -107,7 +107,7 @@ pipeline {
         stage('Ansible Monitoring') {
             steps {
                 sh '''
-                    cd ansible
+                    cd devops-complete/ansible
                     ansible-playbook -i inventory/hosts playbooks/06-nrpe-client.yml
                     ansible-playbook -i inventory/hosts playbooks/07-nagios-server.yml
                 '''
@@ -117,7 +117,7 @@ pipeline {
         stage('Ansible Docker') {
             steps {
                 sh '''
-                    cd ansible
+                    cd devops-complete/ansible
                     ansible-playbook -i inventory/hosts playbooks/08-docker.yml
                 '''
             }
@@ -126,7 +126,7 @@ pipeline {
         stage('Ansible Kubernetes') {
             steps {
                 sh '''
-                    cd ansible
+                    cd devops-complete/ansible
                     ansible-playbook -i inventory/hosts playbooks/09-kubernetes.yml
                 '''
             }
