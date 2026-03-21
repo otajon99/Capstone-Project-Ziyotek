@@ -105,11 +105,6 @@ resource "aws_launch_template" "app2" {
   }
 }
 
-variable "security_group_id" {
-  description = "Security group ID for instances"
-  type        = string
-}
-
 # Auto Scaling Group for App1
 resource "aws_autoscaling_group" "app1" {
   name                      = "${var.environment}-app1-asg"
