@@ -55,11 +55,19 @@
         group: ansible
         mode: '0755'
 
-    - name: Start Minikube with Docker driver
+    - name: Start Minikube with Docker driver (1 CPU)
       shell: |
-        sg docker -c "minikube start --driver=docker --cpus=1 --memory=1536 --force"
+        sg docker -c "minikube start --driver=docker --cpus=1 --memory=2048 --force"
+      become_user: ansible
+      register: minikube_start
+      ignore_errors: yes
+
+    - name: Start Minikube with containerd driver if Docker fails (1 CPU)
+      shell: |
+        sg docker -c "minikube start --driver=containerd --cpus=1 --memory=2048 --force"
       become_user: ansible
       ignore_errors: yes
+      when: minikube_start.rc != 0
 
     - name: Enable Minikube Ingress addon
       shell: sg docker -c "minikube addons enable ingress"
