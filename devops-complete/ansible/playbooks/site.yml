@@ -1,47 +1,21 @@
 ---
 # Main Site Playbook - Deploys all DevOps Lab Infrastructure
+# Uses import_playbook to include individual playbooks
 
-- name: Deploy Base Security to All Servers
-  hosts: linux
-  become: true
-  import_playbook: 01-base-security.yml
+- import_playbook: 01-base-security.yml
 
-- name: Deploy DNS Server
-  hosts: dns
-  become: true
-  import_playbook: 02-dns-server.yml
+- import_playbook: 02-dns-server.yml
 
-- name: Deploy Web Servers
-  hosts: webservers
-  become: true
-  import_playbook: 03-webservers.yml
+- import_playbook: 03-webservers.yml
 
-- name: Deploy Load Balancer
-  hosts: loadbalancer
-  become: true
-  import_playbook: 04-loadbalancer.yml
+- import_playbook: 04-loadbalancer.yml
 
-- name: Deploy Database Server
-  hosts: database
-  become: true
-  import_playbook: 05-database.yml
+- import_playbook: 05-database.yml
 
-- name: Deploy NRPE Client (Monitoring)
-  hosts: linux
-  become: true
-  import_playbook: 06-nrpe-client.yml
+- import_playbook: 06-nrpe-client.yml
 
-- name: Configure Nagios Server
-  hosts: monitoring
-  become: true
-  import_playbook: 07-nagios-server.yml
+- import_playbook: 07-nagios-server.yml
 
-- name: Deploy Docker Server
-  hosts: docker
-  become: true
-  import_playbook: 08-docker.yml
+- import_playbook: 08-docker.yml
 
-- name: Deploy Kubernetes Server
-  hosts: kubernetes
-  become: true
-  import_playbook: 09-kubernetes.yml
+- import_playbook: 09-kubernetes.yml
